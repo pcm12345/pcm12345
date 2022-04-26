@@ -1,0 +1,146 @@
+Dependency
+의존성을 추가합니다.
+
+maven
+
+
+<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+gradle
+
+
+implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+
+SwaggerConfiguration.java
+
+package com.work.apis.config;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
+import springfox.documentation.builders.*;
+import springfox.documentation.service.*;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javax.servlet.http.HttpSession;
+
+@Configuration
+@EnableSwagger2
+@Slf4j
+public class SwaggerConfiguration {
+
+    InetAddress ip;
+    String ipAddress;
+
+    public SwaggerConfiguration() throws UnknownHostException {
+        ip = InetAddress.getLocalHost();
+        ipAddress = ip.getHostAddress();
+        log.info("#### swagger current ip... : " + ipAddress);
+    }
+
+    @Bean
+    public Docket apiApplication() {
+        return initDocket()
+                .apiInfo(getApiInfo("Application.v1", "", "1.0"))
+                .groupName("application")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.work.apis.front"))
+                .build();
+    }
+
+    @Bean
+    public Docket apiAdmin() {
+        return initDocket()
+                .apiInfo(getApiInfo("Admin.v1", "", "1.0"))
+                .groupName("admin")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.work.apis.admin"))
+                .build();
+    }
+
+    @Bean
+    public Docket apiAuth() {
+        return initDocket()
+                .apiInfo(getApiInfo("auth.v1", "", "1.0"))
+                .groupName("auth")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.work.apis.auth"))
+                .build();
+    }
+
+    @Bean
+    public Docket apiCommon() {
+        return initDocket()
+                .apiInfo(getApiInfo("common", "", "1.0"))
+                .groupName("common")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.work.apis.common"))
+                .build();
+    }
+
+    private Docket initDocket() {
+        Docket doc = new Docket(DocumentationType.SWAGGER_2)
+                .securityContexts(Arrays.asList(securityContext()))
+                .securitySchemes(Arrays.asList(apiKey()))
+                .ignoredParameterTypes(HttpSession.class, Model.class) // 파라미터로 안받을 클래스
+                .useDefaultResponseMessages(false);
+
+        return doc;
+    }
+
+    private ApiInfo getApiInfo(String title, String description, String version) {
+        return new ApiInfoBuilder()
+                .title(title)
+                .description(description)
+                .version(version)
+                .contact(new Contact("Carrot Solution", "http://www.carrotians.net",
+                        "carrotsds@carrotglobal.com")) // 두번째는 see more at "" , 세번째는 Contact the developer 에 메일주소
+                .build();
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("AccessToken", authorizationScopes));
+    }
+
+    private ApiKey apiKey() {
+        return new ApiKey("AccessToken", "Authorization", "header");
+    }
+
+}
+
+URL
+
+http://localhost:8080/swagger-ui/
+ 
+
+ 
