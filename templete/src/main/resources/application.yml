@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: local
+##UTF-8 설정
+
+#네이버 오브젝트 연결주소
+naver:
+  end-point: https://kr.object.ncloudstorage.com
+  region-name: kr-standard
+  access-key: EA61C1421A446D68E30E
+  secret-key: AF627C8070D12DF906ECEDA04C5EC3BD87A853B4
+
+##server
+server:
+  port: 80
+  tomcat:
+    accesslog:
+      pattern: ${yyyy-MM-dd HH:mm:ss}t %s %r %{User-Agent}i %{Referer}i %a %b
+      enabled: true
+    basedir: .
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+--- ## local DB 설정
+spring.profiles: local
+spring:
+  datasource:
+    hikari:
+      local:
+        username: carrot
+        password: ghavpdlwl1
+        jdbc-url: jdbc:log4jdbc:mariadb://49.247.213.177:23306/platform
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 600000
+        max-lifetime: 300000
+        auto-commit: false
+  ## redis 정보
+  redis:
+    host: 49.50.165.245
+    port: 26379
+  ## session 설정
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on_save #default 값 : 호출될 때만 redis에 기록 / immediate : 즉시 redis 기록
+
+## log파일 떨어질 위치
+logging.file.path: ./log/local

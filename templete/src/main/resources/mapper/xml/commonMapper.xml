@@ -1,0 +1,46 @@
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.carrot.mapper.main.CommonMapper">
+    <select id="selectAll" resultType="Map">
+    	/* CommonMapper.selectAll : 전체 정보 조회 */
+        ${sql}
+    </select>
+
+    <select id="selectOne" resultType="Map">
+    	/* CommonMapper.selectOne : 선택 정보 조회 */
+        ${sql}
+    </select>
+    
+    <select id="selectInt" resultType="int">
+    	/* CommonMapper.selectInt : 선택 정보 갯수 */
+        ${sql}
+    </select>
+
+    <delete id="delete" >
+   		/* CommonMapper.delete : 정보 삭제 */
+        DELETE FROM ${table} WHERE
+             <foreach item="value" index="key" collection="param" separator=" and ">
+				  	${key} = #{value}
+		     </foreach>
+    </delete>
+
+    <delete id="insert" >
+    	/* CommonMapper.insert : 정보 추가 */
+        INSERT INTO ${table} set
+             <foreach item="value" index="key" collection="data" separator=",">
+				  	${key} = #{value}
+		     </foreach>
+    </delete>
+
+    <update id="update" >
+    	/* CommonMapper.update : 정보 수정 */
+        UPDATE ${table} SET
+             <foreach item="value" index="key" collection="data" separator=",">
+				  	${key} = #{value}
+		     </foreach>
+        WHERE ${where}
+    </update>
+
+</mapper>
