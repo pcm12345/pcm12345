@@ -45,6 +45,8 @@ def oracle_pump(_uid, _password, _schema_name, _directory):
 
 
 def mysql_pump(databasename):
+    ym = datetime.now().strftime("%Y-%m")
+    ymd = datetime.now().strftime("%Y-%m-%d")
     uid = setting.dbinfo[databasename]["user"]
     password = setting.dbinfo[databasename]["password"]
     ip = setting.dbinfo[databasename]["host"]
