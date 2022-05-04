@@ -1,0 +1,135 @@
+## 파일 업로드 크기 2MB 제한
+spring:
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB
+
+  profiles:
+    active: local
+##UTF-8 설정
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+##server
+server:
+  port: 8102
+  max-http-header-size: 65536    ##메일패드 template 등록시 header가 너무 크다고 해서 추가
+  tomcat:
+    max-http-form-post-size: 1000000
+    accesslog:
+      max-days: 180
+      pattern: common
+      rotate: true
+      enabled: true
+      directory: /home/gitlab-runner/accesslog/crm
+    basedir: .
+--- ## local DB 설정
+spring:
+  profiles: local
+  datasource:
+    hikari:
+      local:
+#        username: crm
+#        password: crm0000
+#        jdbc-url: jdbc:log4jdbc:mariadb://127.0.0.1:32768/crm ## hosts 파일로 localhost 도메인 이름 지정 local.com 으로
+        username: root
+        password: ghavpdlwl1
+        jdbc-url: jdbc:log4jdbc:mariadb://127.0.0.1:23306/crm ## hosts 파일로 localhost 도메인 이름 지정 local.com 으로
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 600000
+        max-lifetime: 300000
+        maximum-pool-size: 2
+        auto-commit: false
+      alt:
+        username: carrot
+        password: solutions0036--!
+        jdbc-url: jdbc:log4jdbc:mariadb://email2.carrotglobal.com:23306/tsms_talk ## email2 알림톡 DB연동
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 300000
+        max-lifetime: 300000
+        auto-commit: false
+  ## redis 정보
+  redis:
+    host: 127.0.0.1
+    port: 26379
+## item 정보
+item:
+  page: http://test.crm.com:8102
+  ## session 설정
+  session:
+    store-type: redis
+    redis:
+      flush-mode: on-save #default 값 : 호출될 때만 redis에 기록 / immediate : 즉시 redis 기록
+
+## log파일 떨어질 위치
+#logging.file.path: ./log/local
+#slogging.file.path: /home/gitlab-runner/log/local
+--- ## stage DB 설정
+spring:
+  profiles: stage
+  datasource:
+    hikari:
+      local:
+        username: carrot
+        password: ghavpdlwl1
+        jdbc-url: jdbc:log4jdbc:mariadb://49.50.165.245:23306/crm ## 스테이지 주소
+#        username: crm
+#        password: crm0000
+#        jdbc-url: jdbc:log4jdbc:mariadb://101.101.218.158:23306/crm ## 서비스 주소
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 600000
+        max-lifetime: 300000
+        maximum-pool-size: 2
+        auto-commit: false
+      alt:
+        username: carrot
+        password: solutions0036--!
+        jdbc-url: jdbc:log4jdbc:mariadb://106.10.58.159:23306/tsms_talk ## email2 알림톡 DB연동
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 300000
+        max-lifetime: 300000
+        auto-commit: false
+  ## redis 정보
+  redis:
+    host: 49.50.165.245
+    port: 26379
+## item 정보
+item:
+  page: http://stagecrm.carrotenglish.net:8102
+## log파일 떨어질 위치
+logging.file.path: /home/gitlab-runner/log/crm
+
+--- ## prod DB 설정
+spring:
+  profiles: prod
+  datasource:
+    hikari:
+      local:
+        username: crm
+        password: crm0000
+        jdbc-url: jdbc:log4jdbc:mariadb://10.41.219.182:23306/crm ## hosts 파일로 localhost 도메인 이름 지정 local.com 으로
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 600000
+        max-lifetime: 300000
+        maximum-pool-size: 2
+        auto-commit: false
+      alt:
+        username: carrot
+        password: solutions0036--!
+        jdbc-url: jdbc:log4jdbc:mariadb://10.41.32.35:23306/tsms_talk ## email2 알림톡 DB연동
+        driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+        idle-timeout: 300000
+        max-lifetime: 300000
+        auto-commit: false
+  ## redis 정보
+  redis:
+    host: 10.41.219.182
+    port: 26379
+## item 정보
+item:
+  page: http://happynetwork.info:8102
+## log파일 떨어질 위치
+logging.file.path: /home/gitlab-runner/log/crm

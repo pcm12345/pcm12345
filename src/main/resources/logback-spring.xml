@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+	<!-- <property name="LOG_FILE" value="crm"/> 이걸 쓰니까 application.xml에서 지정한 path에 파일을 생성 안해줌.. -->
+    <!--
+       log4jdbc-log4j2
+       SQL문 로그 레벨 설정
+       SQL문하고 테이블정보만 나오도록 설정해둠
+    -->
+    <logger name="jdbc.sqlonly" level="off"/>
+    <logger name="jdbc.sqltiming" level="INFO"/>
+    <logger name="jdbc.audit" level="off"/>
+    <logger name="jdbc.resultset" level="off"/>
+    <logger name="jdbc.resultsettable" level="INFO"/>
+    <logger name="jdbc.connection" level="off"/>
+
+    <!-- Console 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+	    	<pattern>[ %-5level ] %d{yyyy-MM-dd HH:mm:ss}[%thread] [%M:%F:%line] >>>> %msg%n</pattern>
+	    </encoder>
+    </appender>
+
+    <!-- File log -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		    <!-- rollover daily -->
+		    <fileNamePattern>${LOG_FILE}-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+		    <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+		    </timeBasedFileNamingAndTriggeringPolicy>
+		    <maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %M [%F:%L]- %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	 <!-- <appender name="HIKARI_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			daily rollover
+			<fileNamePattern>${LOG_FILE}-hikari-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy  class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				or whenever the file size reaches 50MB
+				<maxFileSize>50MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			keep 30 days' worth of history
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+		<charset>UTF-8</charset>
+			<Pattern>%d{yy-MM-dd HH:mm:ss} [%thread] %-5level %M [%F:%L]- %msg%n</Pattern>
+		</encoder>
+	</appender> -->
+
+	<!-- <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG">
+	 	<appender-ref ref="HIKARI_FILE"/>
+	 </logger> -->
+   	<!-- <logger name="com.zaxxer.hikari" level="TRACE">
+		<appender-ref ref="HIKARI_FILE"/>
+	</logger> -->
+
+	<springProfile name="local">
+    	<root level="INFO">
+    		<appender-ref ref="CONSOLE"/>
+    		<!-- <appender-ref ref="FILE"/> -->
+    	</root>
+    </springProfile>
+    <springProfile name="stage">
+    	<root level="INFO">
+    		<appender-ref ref="CONSOLE"/>
+    		<appender-ref ref="FILE"/>
+    	</root>
+    </springProfile>
+    <springProfile name="prod">
+    	<root level="INFO">
+    		<appender-ref ref="CONSOLE"/>
+    		<appender-ref ref="FILE"/>
+    	</root>
+    </springProfile>
+
+</configuration>
+
