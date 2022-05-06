@@ -1,0 +1,77 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'com.carrot'
+version = '1.0'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	// MyBatis
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'
+	
+	// log4jdbc
+	compile ('org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4:1.16')
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.17.2'
+
+	// MariaDB
+	compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.5.4'
+	
+	// LOMBOK
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	
+	// Bcrypt
+	implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.3m' // gradle
+	
+	// Swagger
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	
+	// ChainedTransaction	
+    compile('org.springframework.data:spring-data-commons')
+    
+    // hikari	
+	compile group: 'com.zaxxer', name: 'HikariCP', version: '2.3.2'
+	
+	// ASW S3(네이버 오브젝트 스토리지 사용 API)
+	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.238')
+  	implementation 'com.amazonaws:aws-java-sdk-s3'
+  	
+  	// jaxb 추가
+  	compile "javax.xml.bind:jaxb-api"
+
+	// excel
+	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
+	compile group: 'org.apache.poi', name: 'poi', version: '3.9'
+
+	compile 'commons-beanutils:commons-beanutils:1.9.4'
+	
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
