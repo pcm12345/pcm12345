@@ -11,7 +11,7 @@
     <img alt="ionic" src="https://img.shields.io/badge/Ionic-3880FF?style=float&logo=Ionic&logoColor=white"/>
     <img alt="Angular" src="https://img.shields.io/badge/Angular-DD0031?style=float&logo=Angular&logoColor=white"/>
     <img alt="typescript" src="https://img.shields.io/badge/Typescript-3178C6?style=float&logo=typescript&logoColor=white"/>
-    <img alt="java" src="https://img.shields.io/badge/Typescript-3178C6?style=float&logo=typescript&logoColor=white"/>
+    <img alt="Java" src="https://img.shields.io/badge/Typescript-3178C6?style=float&logo=typescript&logoColor=white"/>
 </p>
 
 
