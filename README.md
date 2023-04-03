@@ -7,11 +7,10 @@
 </h3>
 
 <p align=left>
-    <img alt="Javascript" src="https://img.shields.io/badge/Javascript-%23323330.svg?style=float&logo=javascript&logoColor=%23F7DF1E"/></a>
+    <img alt="Java" src="https://img.shields.io/badge/Typescript-3178C6?style=float&logo=typescript&logoColor=white"/>
     <img alt="ionic" src="https://img.shields.io/badge/Ionic-3880FF?style=float&logo=Ionic&logoColor=white"/>
     <img alt="Angular" src="https://img.shields.io/badge/Angular-DD0031?style=float&logo=Angular&logoColor=white"/>
     <img alt="typescript" src="https://img.shields.io/badge/Typescript-3178C6?style=float&logo=typescript&logoColor=white"/>
-    <img alt="Java" src="https://img.shields.io/badge/Typescript-3178C6?style=float&logo=typescript&logoColor=white"/>
 </p>
 
 
